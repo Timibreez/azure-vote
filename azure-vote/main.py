@@ -8,7 +8,7 @@ import logging
 from datetime import datetime
 
 # App Insights
-# TODO: Import required libraries for App Insights
+# Import required libraries for App Insights
 from opencensus.ext.azure import metrics_exporter
 from opencensus.ext.azure.log_exporter import AzureEventHandler, AzureLogHandler
 from opencensus.ext.azure.trace_exporter import AzureExporter
@@ -23,13 +23,18 @@ from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
 
 # Configuring app metrics
-# stats = stats_m.stats
-# view_manager = stats.view_manager
-# config_integration.trace_integrations(['logging'])
-# config_integration.trace_integrations(['requests'])
+stats = stats_m.stats
+view_manager = stats.view_manager
+config_integration.trace_integrations(['logging'])
+config_integration.trace_integrations(['requests'])
 
 # Logging
-logger = logging.getLogger(__name__) # Setup logger
+logger = logging.getLogger(__name__)
+
+# logger.addHandler(AzureLogHandler(
+#     Connection_string = 'InstrumentationKey=73628e66-ddca-4bbf-a809-27fc24d55f4e'
+# ).setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s')))
+
 handler = AzureLogHandler(
     Connection_string = 'InstrumentationKey=73628e66-ddca-4bbf-a809-27fc24d55f4e'
 )
@@ -152,6 +157,6 @@ def index():
 
 if __name__ == "__main__":
     # TODO: Use the statement below when running locally
-    app.run() 
+    # app.run() 
     # TODO: Use the statement below before deployment to VMSS
-    # app.run(host='0.0.0.0', threaded=True, debug=True) # remote
+    app.run(host='0.0.0.0', threaded=True, debug=True) # remote
