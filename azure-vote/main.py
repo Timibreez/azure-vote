@@ -31,13 +31,11 @@ config_integration.trace_integrations(["requests"])
 
 # Logging
 logger = logging.getLogger(__name__)
-
 handler = AzureLogHandler(
     connection_string="InstrumentationKey=c2e7a694-4827-4229-9709-519b5642ecd3"
 )
 handler.setFormatter(logging.Formatter("%(traceId)s %(spanId)s %(message)s"))
 logger.addHandler(handler)
-
 # Logging custom Events
 logger.addHandler(
     AzureEventHandler(
@@ -162,7 +160,14 @@ def index():
             # TODO: use logger object to log dog vote
             logger.info("Dogs Vote", extra=properties)
 
-            return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
+            return render_template(
+                "index.html",
+                value1=int(vote1),
+                value2=int(vote2),
+                button1=button1,
+                button2=button2,
+                title=title,
+            )
 
         else:
             # Insert vote result into DB
@@ -171,13 +176,29 @@ def index():
 
             # Get current values
             vote1 = r.get(button1).decode("utf-8")
+            #properties = {"custom_dimensions": {"Cats Vote": vote1}}
+            # TODO: use logger object to log cat vote
+            #logger.info("Cats Vote", extra=properties)
+
             vote2 = r.get(button2).decode("utf-8")
+            #properties = {"custom_dimensions": {"Dogs Vote": vote2}}
+            # TODO: use logger object to log dog vote
+            #logger.info("Dogs Vote", extra=properties)
 
             # Return results
-            return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
+            return render_template(
+                "index.html",
+                value1=int(vote1),
+                value2=int(vote2),
+                button1=button1,
+                button2=button2,
+                title=title,
+            )
+
 
 if __name__ == "__main__":
     # comment line below when deploying to VMSS
     app.run()  # local
     # uncomment the line below before deployment to VMSS
-    # app.run(host="0.0.0.0", threaded=True, debug=True)  # remote
+    #app.run(host="0.0.0.0", threaded=True, debug=True)  # remote
+    # app.run(host='0.0.0.0', threaded=True, debug=True, port=5000) # remote
