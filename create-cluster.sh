@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # Variables
-resourceGroup="acdnd-c4-project"
-clusterName="udacity-cluster"
+resourceGroup="azure-vote-rg"
+clusterName="timibreez-cluster"
+region="centralus"
+myAcrName="myacr202106"
 
 # Install aks cli
 echo "Installing AKS CLI"
@@ -21,7 +23,9 @@ az aks create \
 --name $clusterName \
 --node-count 1 \
 --enable-addons monitoring \
---generate-ssh-keys
+--generate-ssh-keys \
+--location $region \
+--attach-acr $myAcrName
 
 # For Cloud Lab users
 az aks create \
@@ -51,6 +55,6 @@ echo "Verifying connection to $clusterName"
 
 kubectl get nodes
 
-# echo "Deploying to AKS cluster"
+echo "Deploying to AKS cluster"
 # The command below will deploy a standard application to your AKS cluster. 
-# kubectl apply -f azure-vote.yaml
+kubectl apply -f azure-vote.yaml
